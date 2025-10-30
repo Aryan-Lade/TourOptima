@@ -1,0 +1,16 @@
+@echo off
+echo Starting Tourist Destination Optimization...
+
+echo Installing backend dependencies...
+cd backend
+pip install -r requirements.txt >nul 2>&1
+
+echo Starting backend server...
+start /b uvicorn main:app --reload --port 8000
+
+echo Installing frontend dependencies...
+cd ..\frontend
+call npm install >nul 2>&1
+
+echo Starting frontend server...
+npm run dev

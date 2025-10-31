@@ -7,7 +7,12 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://tour-optima.vercel.app",  # your Vercel domain
+        "http://localhost:3000",          # for local testing
+        "http://localhost:5173"           # for Vite dev server
+    ],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )

@@ -2,6 +2,9 @@
 
 A web application that uses the Fractional Knapsack Algorithm to optimize tourist destination selection based on budget or time constraints.
 
+## Live Preview:  
+https://tour-optima.vercel.app/
+
 ## Setup
 
 ### Backend (FastAPI)

@@ -61,6 +61,7 @@ function App() {
       console.log('Results set successfully:', data)
     } catch (error) {
       console.error('Error:', error)
+      console.error('Error message:', error.message)
     }
     setLoading(false)
   }
@@ -375,16 +376,28 @@ Made by Aryan Lade and Vansh Mahalle
                     </div>
                     
                     <button
-                      onClick={() => {
-                        console.log('=== BUTTON CLICKED ===')
+                      onClick={async () => {
+                        console.log('=== BUTTON CLICKED ON VERCEL ===')
                         console.log('Destinations:', destinations)
                         console.log('Limit:', limit)
                         console.log('Loading:', loading)
-                        console.log('Button disabled?', loading || !destinations.length || !limit)
-                        if (destinations.length && limit) {
-                          optimize()
-                        } else {
-                          alert('Please add destinations and set a limit first!')
+                        console.log('Button should be disabled?', loading || !destinations.length || !limit)
+                        
+                        if (!destinations.length) {
+                          console.error('No destinations added!')
+                          return
+                        }
+                        if (!limit) {
+                          console.error('No limit set!')
+                          return
+                        }
+                        
+                        console.log('Calling optimize function...')
+                        try {
+                          await optimize()
+                          console.log('Optimize function completed')
+                        } catch (error) {
+                          console.error('Error in optimize:', error)
                         }
                       }}
                       disabled={loading || !destinations.length || !limit}

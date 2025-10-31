@@ -13,17 +13,19 @@ function App() {
   const [newDestination, setNewDestination] = useState({
     name: '',
     value: '',
-    cost: ''
+    cost: '',
+    time: ''
   })
 
   const addDestination = () => {
-    if (newDestination.name && newDestination.value && newDestination.cost) {
+    if (newDestination.name && newDestination.value && newDestination.cost && newDestination.time) {
       setDestinations([...destinations, {
         ...newDestination,
         value: parseFloat(newDestination.value),
-        cost: parseFloat(newDestination.cost)
+        cost: parseFloat(newDestination.cost),
+        time: parseFloat(newDestination.time)
       }])
-      setNewDestination({ name: '', value: '', cost: '' })
+      setNewDestination({ name: '', value: '', cost: '', time: '' })
     }
   }
 
@@ -300,9 +302,20 @@ Made by Aryan Lade and Vansh Mahalle
                     <div className="relative group">
                       <input
                         type="number"
-                        placeholder={mode === 'budget' ? 'Cost (₹)' : 'Time (hours)'}
+                        placeholder="Cost (₹)"
                         value={newDestination.cost}
                         onChange={(e) => setNewDestination({...newDestination, cost: e.target.value})}
+                        className="w-full p-3 bg-slate-700/50 backdrop-blur border border-slate-600 rounded-lg focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300 hover:bg-slate-700/70 text-white placeholder-slate-400 text-sm"
+                      />
+                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500/0 to-cyan-500/0 group-hover:from-blue-500/5 group-hover:to-cyan-500/5 transition-all duration-300 pointer-events-none"></div>
+                    </div>
+                    
+                    <div className="relative group">
+                      <input
+                        type="number"
+                        placeholder="Time to visit (hours)"
+                        value={newDestination.time}
+                        onChange={(e) => setNewDestination({...newDestination, time: e.target.value})}
                         className="w-full p-3 bg-slate-700/50 backdrop-blur border border-slate-600 rounded-lg focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300 hover:bg-slate-700/70 text-white placeholder-slate-400 text-sm"
                       />
                       <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500/0 to-cyan-500/0 group-hover:from-blue-500/5 group-hover:to-cyan-500/5 transition-all duration-300 pointer-events-none"></div>
@@ -385,7 +398,8 @@ Made by Aryan Lade and Vansh Mahalle
                               <span className="font-medium text-blue-100 text-base md:text-lg">{dest.name}</span>
                               <div className="text-sm md:text-base text-slate-300">
                                 <span className="bg-blue-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg mr-2">V: {dest.value}</span>
-                                <span className="bg-cyan-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg">C: {dest.cost}</span>
+                                <span className="bg-cyan-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg mr-2">₹{dest.cost}</span>
+                                <span className="bg-green-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg">{dest.time}h</span>
                               </div>
                             </div>
                           </div>
@@ -485,7 +499,8 @@ Made by Aryan Lade and Vansh Mahalle
                               </div>
                               <div className="flex justify-between text-sm md:text-base text-slate-300">
                                 <span className="bg-blue-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg">Value: {dest.value.toFixed(2)}</span>
-                                <span className="bg-cyan-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg">Cost: {dest.cost.toFixed(2)}</span>
+                                <span className="bg-cyan-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg">₹{dest.cost.toFixed(2)}</span>
+                                <span className="bg-green-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg">{dest.time.toFixed(2)}h</span>
                               </div>
                               {dest.fraction < 1 && (
                                 <div className="w-full bg-slate-600/30 rounded-full h-2 mt-3">

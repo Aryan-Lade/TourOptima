@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
-const API_BASE = import.meta.env.VITE_API_BASE
-
 function App() {
   const [destinations, setDestinations] = useState([])
   const [mode, setMode] = useState('budget')
@@ -27,14 +25,8 @@ function App() {
         cost: parseFloat(newDestination.cost),
         time: parseFloat(newDestination.time)
       }])
-      // Clear input fields after adding
       setNewDestination({ name: '', value: '', cost: '', time: '' })
     }
-  }
-
-  const deleteDestination = (index) => {
-    const updatedDestinations = destinations.filter((_, i) => i !== index)
-    setDestinations(updatedDestinations)
   }
 
   const optimize = async () => {
@@ -42,7 +34,7 @@ function App() {
     
     setLoading(true)
     try {
-      const response = await fetch(`${API_BASE}/optimize`, {
+      const response = await fetch('https://touropti-backend.onrender.com/optimize', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -99,16 +91,16 @@ Made by Aryan Lade and Vansh Mahalle
   }
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden relative font-poppins">
+    <div className="relative min-h-screen overflow-hidden text-white bg-black font-poppins">
       {/* Enhanced animated background with multiple layers - Blue theme */}
       <div className="fixed inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-950/20 via-black to-cyan-950/20"></div>
         <div className="absolute inset-0">
-          <div className="absolute top-0 -left-4 w-48 md:w-96 h-48 md:h-96 bg-blue-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
-          <div className="absolute top-0 -right-4 w-48 md:w-96 h-48 md:h-96 bg-cyan-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
-          <div className="absolute -bottom-8 left-20 w-48 md:w-96 h-48 md:h-96 bg-sky-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
-          <div className="absolute bottom-0 right-20 w-48 md:w-96 h-48 md:h-96 bg-teal-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-6000"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 md:w-96 h-48 md:h-96 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-pulse"></div>
+          <div className="absolute top-0 w-48 h-48 rounded-full -left-4 md:w-96 md:h-96 bg-blue-500/20 mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
+          <div className="absolute top-0 w-48 h-48 rounded-full -right-4 md:w-96 md:h-96 bg-cyan-500/20 mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+          <div className="absolute w-48 h-48 rounded-full -bottom-8 left-20 md:w-96 md:h-96 bg-sky-500/20 mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
+          <div className="absolute bottom-0 w-48 h-48 rounded-full right-20 md:w-96 md:h-96 bg-teal-500/20 mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-6000"></div>
+          <div className="absolute w-48 h-48 transform -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50 top-1/2 left-1/2 md:w-96 md:h-96 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 mix-blend-multiply filter blur-3xl animate-pulse"></div>
         </div>
 
         {/* Animated grid overlay - Blue theme */}
@@ -145,9 +137,9 @@ Made by Aryan Lade and Vansh Mahalle
 
       {/* Hero Section */}
       <div className="relative z-10">
-        <div className="container mx-auto px-4 md:px-6 py-4">
+        <div className="container px-4 py-4 mx-auto md:px-6">
           {/* Enhanced Header */}
-          <nav className="flex justify-between items-center mb-8 md:mb-12 animate-fade-in-down">
+          <nav className="flex items-center justify-between mb-8 md:mb-12 animate-fade-in-down">
             <div className="flex items-center space-x-2 group">
               <span className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent bg-300% animate-gradient">
                 TourOptima
@@ -155,25 +147,25 @@ Made by Aryan Lade and Vansh Mahalle
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="items-center hidden space-x-8 md:flex">
               <button 
                 onClick={() => setShowAlgorithmInfo(true)}
-                className="relative text-blue-300 hover:text-white px-6 py-3 text-lg font-medium transition-all duration-300 overflow-hidden group">
+                className="relative px-6 py-3 overflow-hidden text-lg font-medium text-blue-300 transition-all duration-300 hover:text-white group">
                 <span className="relative z-10">Algorithm</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-cyan-600/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                <div className="absolute inset-0 transition-transform duration-300 translate-y-full bg-gradient-to-r from-blue-600/20 to-cyan-600/20 group-hover:translate-y-0" />
               </button>
               <button 
                 onClick={downloadResultsPDF}
                 disabled={!results}
-                className="relative text-blue-300 hover:text-white disabled:text-gray-500 px-6 py-3 text-lg font-medium transition-all duration-300 overflow-hidden group">
+                className="relative px-6 py-3 overflow-hidden text-lg font-medium text-blue-300 transition-all duration-300 hover:text-white disabled:text-gray-500 group">
                 <span className="relative z-10">Results</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-600/20 to-sky-600/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                <div className="absolute inset-0 transition-transform duration-300 translate-y-full bg-gradient-to-r from-cyan-600/20 to-sky-600/20 group-hover:translate-y-0" />
               </button>
             </div>
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden text-white p-2"
+              className="p-2 text-white md:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? (
@@ -190,14 +182,14 @@ Made by Aryan Lade and Vansh Mahalle
 
           {/* Mobile Menu */}
           {mobileMenuOpen && (
-            <div className="md:hidden absolute top-16 left-0 right-0 bg-black/95 backdrop-blur-xl border-t border-blue-500/20 p-4 animate-fade-in-down">
+            <div className="absolute left-0 right-0 p-4 border-t md:hidden top-16 bg-black/95 backdrop-blur-xl border-blue-500/20 animate-fade-in-down">
               <div className="space-y-4">
                 <button 
                   onClick={() => {
                     setShowAlgorithmInfo(true);
                     setMobileMenuOpen(false);
                   }}
-                  className="w-full text-blue-300 hover:text-white px-6 py-3 text-lg font-medium">
+                  className="w-full px-6 py-3 text-lg font-medium text-blue-300 hover:text-white">
                   Algorithm
                 </button>
                 <button 
@@ -206,7 +198,7 @@ Made by Aryan Lade and Vansh Mahalle
                     setMobileMenuOpen(false);
                   }}
                   disabled={!results}
-                  className="w-full text-blue-300 hover:text-white disabled:text-gray-500 px-6 py-3 text-lg font-medium">
+                  className="w-full px-6 py-3 text-lg font-medium text-blue-300 hover:text-white disabled:text-gray-500">
                   Results
                 </button>
               </div>
@@ -216,21 +208,21 @@ Made by Aryan Lade and Vansh Mahalle
           {/* Hero Content */}
           <div className="relative">
             {/* Floating decorative elements */}
-            <div className="absolute -top-20 md:-top-40 -left-20 md:-left-40 w-40 md:w-80 h-40 md:h-80 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-3xl animate-float" />
-            <div className="absolute -bottom-20 md:-bottom-40 -right-20 md:-right-40 w-48 md:w-96 h-48 md:h-96 bg-gradient-to-bl from-cyan-500/10 to-transparent rounded-full blur-3xl animate-float-slow" />
+            <div className="absolute w-40 h-40 rounded-full -top-20 md:-top-40 -left-20 md:-left-40 md:w-80 md:h-80 bg-gradient-to-br from-blue-500/10 to-transparent blur-3xl animate-float" />
+            <div className="absolute w-48 h-48 rounded-full -bottom-20 md:-bottom-40 -right-20 md:-right-40 md:w-96 md:h-96 bg-gradient-to-bl from-cyan-500/10 to-transparent blur-3xl animate-float-slow" />
 
-            <div className="text-center max-w-7xl mx-auto relative">
+            <div className="relative mx-auto text-center max-w-7xl">
               {/* Animated tag line */}
-              <div className="mb-6 md:mb-8 animate-fade-in-up opacity-0 animation-delay-200">
-                <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 backdrop-blur-sm border border-blue-500/20 rounded-full px-4 md:px-6 py-2 md:py-3 hover:border-blue-500/40 transition-all duration-500">
-                  <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full animate-pulse" />
-                  <span className="text-blue-300 text-xs md:text-sm font-medium">Fractional Knapsack Algorithm</span>
+              <div className="mb-6 opacity-0 md:mb-8 animate-fade-in-up animation-delay-200">
+                <div className="inline-flex items-center px-4 py-2 space-x-2 transition-all duration-500 border rounded-full bg-gradient-to-r from-blue-500/10 to-cyan-500/10 backdrop-blur-sm border-blue-500/20 md:px-6 md:py-3 hover:border-blue-500/40">
+                  <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 animate-pulse" />
+                  <span className="text-xs font-medium text-blue-300 md:text-sm">Fractional Knapsack Algorithm</span>
                 </div>
               </div>
 
               {/* Main heading with animation */}
-              <div className="mb-8 md:mb-12 animate-fade-in-up opacity-0 animation-delay-400">
-                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl font-black mb-4 md:mb-6 leading-none tracking-tight relative">
+              <div className="mb-8 opacity-0 md:mb-12 animate-fade-in-up animation-delay-400">
+                <h1 className="relative mb-4 text-5xl font-black leading-none tracking-tight sm:text-6xl md:text-7xl lg:text-9xl md:mb-6">
                   <span className="relative inline-block">
                     <span className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-600 to-sky-600 blur-2xl md:blur-3xl opacity-40 animate-pulse"></span>
                     <span className="relative bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent bg-300% animate-gradient">
@@ -241,22 +233,22 @@ Made by Aryan Lade and Vansh Mahalle
 
                 {/* Animated divider */}
                 <div className="flex items-center justify-center mb-6 md:mb-8">
-                  <div className="h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent w-20 md:w-40 animate-expand"></div>
+                  <div className="w-20 h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent md:w-40 animate-expand"></div>
                   <div className="mx-4 md:mx-6">
-                    <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse-glow"></div>
+                    <div className="w-3 h-3 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 animate-pulse-glow"></div>
                   </div>
-                  <div className="h-px bg-gradient-to-l from-transparent via-blue-500 to-transparent w-20 md:w-40 animate-expand"></div>
+                  <div className="w-20 h-px bg-gradient-to-l from-transparent via-blue-500 to-transparent md:w-40 animate-expand"></div>
                 </div>
 
-                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-light text-gray-200 mb-4 md:mb-6 leading-relaxed px-4 md:px-0">
-                  Optimizing <span className="font-semibold bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent">Tourist Destinations</span><br className="hidden md:block" />
+                <h2 className="px-4 mb-4 text-xl font-light leading-relaxed text-gray-200 sm:text-2xl md:text-3xl lg:text-5xl md:mb-6 md:px-0">
+                  Optimizing <span className="font-semibold text-transparent bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text">Tourist Destinations</span><br className="hidden md:block" />
                   <span className="md:hidden"> </span>with Smart Algorithms
                 </h2>
               </div>
 
               {/* Enhanced description */}
-              <div className="max-w-4xl mx-auto mb-8 md:mb-12 animate-fade-in-up opacity-0 animation-delay-600 px-4 md:px-0">
-                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-400 leading-relaxed">
+              <div className="max-w-4xl px-4 mx-auto mb-8 opacity-0 md:mb-12 animate-fade-in-up animation-delay-600 md:px-0">
+                <p className="text-base leading-relaxed text-gray-400 sm:text-lg md:text-xl lg:text-2xl">
                   Advanced fractional knapsack algorithm optimizes your travel destinations based on budget or time constraints.
                   Maximize satisfaction while staying within your limits.
                 </p>
@@ -267,33 +259,33 @@ Made by Aryan Lade and Vansh Mahalle
       </div>
 
       {/* Main Content Section */}
-      <div className="relative py-16 md:py-32 bg-gradient-to-b from-transparent via-blue-950/10 to-black mt-12 md:mt-20">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 md:gap-16 max-w-7xl mx-auto">
+      <div className="relative py-16 mt-12 md:py-32 bg-gradient-to-b from-transparent via-blue-950/10 to-black md:mt-20">
+        <div className="container px-4 mx-auto md:px-6">
+          <div className="grid grid-cols-1 gap-8 mx-auto xl:grid-cols-2 md:gap-16 max-w-7xl">
             
             {/* Input Section */}
             <div className="group">
-              <div className="relative bg-black/40 border-blue-500/20 backdrop-blur-2xl p-8 md:p-10 hover:border-blue-400/60 transition-all duration-700 hover:shadow-2xl hover:shadow-blue-500/30 hover:-translate-y-3 overflow-hidden rounded-2xl md:rounded-3xl">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-cyan-500 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700" />
+              <div className="relative p-8 overflow-hidden transition-all duration-700 bg-black/40 border-blue-500/20 backdrop-blur-2xl md:p-10 hover:border-blue-400/60 hover:shadow-2xl hover:shadow-blue-500/30 hover:-translate-y-3 rounded-2xl md:rounded-3xl">
+                <div className="absolute inset-0 transition-opacity duration-700 opacity-0 bg-gradient-to-br from-blue-500/5 via-transparent to-transparent group-hover:opacity-100" />
+                <div className="absolute top-0 left-0 w-full h-1 transition-all duration-700 opacity-0 bg-gradient-to-r from-blue-500 via-cyan-500 to-transparent group-hover:opacity-100" />
                 
                 <div className="relative z-10">
                   <div className="flex items-center mb-6 md:mb-8">
-                    <div className="w-3 h-3 bg-blue-500 rounded-full mr-3 animate-pulse"></div>
-                    <h2 className="text-2xl md:text-3xl font-bold text-white group-hover:text-blue-200 transition-colors duration-500">Configuration Panel</h2>
+                    <div className="w-3 h-3 mr-3 bg-blue-500 rounded-full animate-pulse"></div>
+                    <h2 className="text-2xl font-bold text-white transition-colors duration-500 md:text-3xl group-hover:text-blue-200">Configuration Panel</h2>
                   </div>
                   
                   {/* Add Destination Form */}
-                  <div className="space-y-4 md:space-y-6 mb-8 md:mb-10">
+                  <div className="mb-8 space-y-4 md:space-y-6 md:mb-10">
                     <div className="relative group">
                       <input
                         type="text"
                         placeholder="Destination name"
                         value={newDestination.name}
                         onChange={(e) => setNewDestination({...newDestination, name: e.target.value})}
-                        className="w-full p-3 bg-slate-700/50 backdrop-blur border border-slate-600 rounded-lg focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300 hover:bg-slate-700/70 text-white placeholder-slate-400 text-sm"
+                        className="w-full p-3 text-sm text-white transition-all duration-300 border rounded-lg bg-slate-700/50 backdrop-blur border-slate-600 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 hover:bg-slate-700/70 placeholder-slate-400"
                       />
-                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500/0 to-cyan-500/0 group-hover:from-blue-500/5 group-hover:to-cyan-500/5 transition-all duration-300 pointer-events-none"></div>
+                      <div className="absolute inset-0 transition-all duration-300 rounded-lg pointer-events-none bg-gradient-to-r from-blue-500/0 to-cyan-500/0 group-hover:from-blue-500/5 group-hover:to-cyan-500/5"></div>
                     </div>
                     
                     <div className="relative group">
@@ -302,9 +294,9 @@ Made by Aryan Lade and Vansh Mahalle
                         placeholder="Value (satisfaction score)"
                         value={newDestination.value}
                         onChange={(e) => setNewDestination({...newDestination, value: e.target.value})}
-                        className="w-full p-3 bg-slate-700/50 backdrop-blur border border-slate-600 rounded-lg focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300 hover:bg-slate-700/70 text-white placeholder-slate-400 text-sm"
+                        className="w-full p-3 text-sm text-white transition-all duration-300 border rounded-lg bg-slate-700/50 backdrop-blur border-slate-600 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 hover:bg-slate-700/70 placeholder-slate-400"
                       />
-                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500/0 to-cyan-500/0 group-hover:from-blue-500/5 group-hover:to-cyan-500/5 transition-all duration-300 pointer-events-none"></div>
+                      <div className="absolute inset-0 transition-all duration-300 rounded-lg pointer-events-none bg-gradient-to-r from-blue-500/0 to-cyan-500/0 group-hover:from-blue-500/5 group-hover:to-cyan-500/5"></div>
                     </div>
                     
                     <div className="relative group">
@@ -313,9 +305,9 @@ Made by Aryan Lade and Vansh Mahalle
                         placeholder="Cost (₹)"
                         value={newDestination.cost}
                         onChange={(e) => setNewDestination({...newDestination, cost: e.target.value})}
-                        className="w-full p-3 bg-slate-700/50 backdrop-blur border border-slate-600 rounded-lg focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300 hover:bg-slate-700/70 text-white placeholder-slate-400 text-sm"
+                        className="w-full p-3 text-sm text-white transition-all duration-300 border rounded-lg bg-slate-700/50 backdrop-blur border-slate-600 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 hover:bg-slate-700/70 placeholder-slate-400"
                       />
-                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500/0 to-cyan-500/0 group-hover:from-blue-500/5 group-hover:to-cyan-500/5 transition-all duration-300 pointer-events-none"></div>
+                      <div className="absolute inset-0 transition-all duration-300 rounded-lg pointer-events-none bg-gradient-to-r from-blue-500/0 to-cyan-500/0 group-hover:from-blue-500/5 group-hover:to-cyan-500/5"></div>
                     </div>
                     
                     <div className="relative group">
@@ -324,16 +316,16 @@ Made by Aryan Lade and Vansh Mahalle
                         placeholder="Time to visit (hours)"
                         value={newDestination.time}
                         onChange={(e) => setNewDestination({...newDestination, time: e.target.value})}
-                        className="w-full p-3 bg-slate-700/50 backdrop-blur border border-slate-600 rounded-lg focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300 hover:bg-slate-700/70 text-white placeholder-slate-400 text-sm"
+                        className="w-full p-3 text-sm text-white transition-all duration-300 border rounded-lg bg-slate-700/50 backdrop-blur border-slate-600 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 hover:bg-slate-700/70 placeholder-slate-400"
                       />
-                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500/0 to-cyan-500/0 group-hover:from-blue-500/5 group-hover:to-cyan-500/5 transition-all duration-300 pointer-events-none"></div>
+                      <div className="absolute inset-0 transition-all duration-300 rounded-lg pointer-events-none bg-gradient-to-r from-blue-500/0 to-cyan-500/0 group-hover:from-blue-500/5 group-hover:to-cyan-500/5"></div>
                     </div>
                     
                     <button
                       onClick={addDestination}
-                      className="relative group bg-gradient-to-r from-blue-600 via-cyan-600 to-sky-600 hover:from-blue-700 hover:via-cyan-700 hover:to-sky-700 text-white border-0 px-6 py-4 text-base font-semibold overflow-hidden shadow-2xl shadow-blue-500/30 rounded-xl transform transition-all duration-300 hover:scale-105 hover:shadow-blue-500/50 w-full"
+                      className="relative w-full px-6 py-4 overflow-hidden text-base font-semibold text-white transition-all duration-300 transform border-0 shadow-2xl group bg-gradient-to-r from-blue-600 via-cyan-600 to-sky-600 hover:from-blue-700 hover:via-cyan-700 hover:to-sky-700 shadow-blue-500/30 rounded-xl hover:scale-105 hover:shadow-blue-500/50"
                     >
-                      <span className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-600 to-sky-600 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500"></span>
+                      <span className="absolute inset-0 transition-opacity duration-500 opacity-0 bg-gradient-to-r from-blue-600 via-cyan-600 to-sky-600 group-hover:opacity-100 blur-xl"></span>
                       <span className="relative z-10 flex items-center justify-center gap-3">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -346,11 +338,11 @@ Made by Aryan Lade and Vansh Mahalle
                   {/* Optimization Settings */}
                   <div className="space-y-4 md:space-y-6">
                     <div className="relative">
-                      <label className="block mb-3 text-blue-200 font-medium text-base md:text-lg">Optimization Mode:</label>
+                      <label className="block mb-3 text-base font-medium text-blue-200 md:text-lg">Optimization Mode:</label>
                       <select
                         value={mode}
                         onChange={(e) => setMode(e.target.value)}
-                        className="w-full p-3 bg-slate-700/50 backdrop-blur border border-slate-600 rounded-lg focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300 hover:bg-slate-700/70 text-white text-sm"
+                        className="w-full p-3 text-sm text-white transition-all duration-300 border rounded-lg bg-slate-700/50 backdrop-blur border-slate-600 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 hover:bg-slate-700/70"
                       >
                         <option value="budget">💰 Budget Constraint</option>
                         <option value="time">⏰ Time Constraint</option>
@@ -363,19 +355,19 @@ Made by Aryan Lade and Vansh Mahalle
                         placeholder={mode === 'budget' ? 'Budget limit (₹)' : 'Time limit (hours)'}
                         value={limit}
                         onChange={(e) => setLimit(e.target.value)}
-                        className="w-full p-3 bg-slate-700/50 backdrop-blur border border-slate-600 rounded-lg focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all duration-300 hover:bg-slate-700/70 text-white placeholder-slate-400 text-sm"
+                        className="w-full p-3 text-sm text-white transition-all duration-300 border rounded-lg bg-slate-700/50 backdrop-blur border-slate-600 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 hover:bg-slate-700/70 placeholder-slate-400"
                       />
-                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500/0 to-cyan-500/0 group-hover:from-blue-500/5 group-hover:to-cyan-500/5 transition-all duration-300 pointer-events-none"></div>
+                      <div className="absolute inset-0 transition-all duration-300 rounded-lg pointer-events-none bg-gradient-to-r from-blue-500/0 to-cyan-500/0 group-hover:from-blue-500/5 group-hover:to-cyan-500/5"></div>
                     </div>
                     
                     <button
                       onClick={optimize}
                       disabled={loading || !destinations.length || !limit}
-                      className="relative group bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 disabled:from-slate-600 disabled:to-slate-700 text-white border-0 px-6 py-4 text-base font-semibold overflow-hidden shadow-2xl shadow-green-500/30 rounded-xl transform transition-all duration-300 hover:scale-105 hover:shadow-green-500/50 active:scale-95 disabled:scale-100 disabled:hover:shadow-none w-full"
+                      className="relative w-full px-6 py-4 overflow-hidden text-base font-semibold text-white transition-all duration-300 transform border-0 shadow-2xl group bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 disabled:from-slate-600 disabled:to-slate-700 shadow-green-500/30 rounded-xl hover:scale-105 hover:shadow-green-500/50 active:scale-95 disabled:scale-100 disabled:hover:shadow-none"
                     >
                       {loading ? (
                         <span className="flex items-center justify-center">
-                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <svg className="w-5 h-5 mr-3 -ml-1 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                           </svg>
@@ -395,30 +387,19 @@ Made by Aryan Lade and Vansh Mahalle
                   {/* Destinations List */}
                   {destinations.length > 0 && (
                     <div className="mt-8 md:mt-10">
-                      <h3 className="font-semibold mb-4 md:mb-6 text-blue-200 flex items-center text-lg md:text-xl">
-                        <div className="w-2 h-2 bg-cyan-400 rounded-full mr-2"></div>
+                      <h3 className="flex items-center mb-4 text-lg font-semibold text-blue-200 md:mb-6 md:text-xl">
+                        <div className="w-2 h-2 mr-2 rounded-full bg-cyan-400"></div>
                         Added Destinations ({destinations.length})
                       </h3>
-                      <div className="space-y-3 md:space-y-4 max-h-64 overflow-y-auto">
+                      <div className="space-y-3 overflow-y-auto md:space-y-4 max-h-64">
                         {destinations.map((dest, idx) => (
-                          <div key={idx} className="bg-slate-700/30 backdrop-blur border border-slate-600/50 p-4 md:p-6 rounded-xl md:rounded-2xl hover:bg-slate-700/50 hover:border-blue-500/30 transition-all duration-300 transform hover:scale-102">
-                            <div className="flex justify-between items-center">
-                              <span className="font-medium text-blue-100 text-base md:text-lg">{dest.name}</span>
-                              <div className="flex items-center space-x-2">
-                                <div className="text-sm md:text-base text-slate-300">
-                                  <span className="bg-blue-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg mr-2">V: {dest.value}</span>
-                                  <span className="bg-cyan-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg mr-2">₹{dest.cost}</span>
-                                  <span className="bg-green-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg">{dest.time}h</span>
-                                </div>
-                                <button
-                                  onClick={() => deleteDestination(idx)}
-                                  className="ml-3 bg-red-500/20 hover:bg-red-500/40 text-red-400 hover:text-red-300 border border-red-500/30 hover:border-red-500/50 px-2 py-1 rounded-lg transition-all duration-200"
-                                  title="Delete destination"
-                                >
-                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                  </svg>
-                                </button>
+                          <div key={idx} className="p-4 transition-all duration-300 transform border bg-slate-700/30 backdrop-blur border-slate-600/50 md:p-6 rounded-xl md:rounded-2xl hover:bg-slate-700/50 hover:border-blue-500/30 hover:scale-102">
+                            <div className="flex items-center justify-between">
+                              <span className="text-base font-medium text-blue-100 md:text-lg">{dest.name}</span>
+                              <div className="text-sm md:text-base text-slate-300">
+                                <span className="bg-blue-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg mr-2">V: {dest.value}</span>
+                                <span className="bg-cyan-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg mr-2">₹{dest.cost}</span>
+                                <span className="bg-green-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg">{dest.time}h</span>
                               </div>
                             </div>
                           </div>
@@ -431,45 +412,45 @@ Made by Aryan Lade and Vansh Mahalle
             </div>
             {/* Results Section */}
             <div className="group">
-              <div className="relative bg-black/40 border-blue-500/20 backdrop-blur-2xl p-8 md:p-10 hover:border-blue-400/60 transition-all duration-700 hover:shadow-2xl hover:shadow-blue-500/30 hover:-translate-y-3 overflow-hidden rounded-2xl md:rounded-3xl h-full">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 via-emerald-500 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700" />
+              <div className="relative h-full p-8 overflow-hidden transition-all duration-700 bg-black/40 border-blue-500/20 backdrop-blur-2xl md:p-10 hover:border-blue-400/60 hover:shadow-2xl hover:shadow-blue-500/30 hover:-translate-y-3 rounded-2xl md:rounded-3xl">
+                <div className="absolute inset-0 transition-opacity duration-700 opacity-0 bg-gradient-to-br from-blue-500/5 via-transparent to-transparent group-hover:opacity-100" />
+                <div className="absolute top-0 left-0 w-full h-1 transition-all duration-700 opacity-0 bg-gradient-to-r from-green-500 via-emerald-500 to-transparent group-hover:opacity-100" />
                 
                 <div className="relative z-10">
                   <div className="flex items-center mb-6 md:mb-8">
-                    <div className="w-3 h-3 bg-green-500 rounded-full mr-3 animate-pulse"></div>
-                    <h2 className="text-2xl md:text-3xl font-bold text-white group-hover:text-blue-200 transition-colors duration-500">Optimization Results</h2>
+                    <div className="w-3 h-3 mr-3 bg-green-500 rounded-full animate-pulse"></div>
+                    <h2 className="text-2xl font-bold text-white transition-colors duration-500 md:text-3xl group-hover:text-blue-200">Optimization Results</h2>
                   </div>
                   
                   {results ? (
                     <div className="space-y-8 md:space-y-10">
                       {/* Summary Cards */}
                       <div className="grid grid-cols-2 gap-4 md:gap-6">
-                        <div className="group cursor-pointer">
-                          <div className="relative bg-gradient-to-br from-blue-600/20 to-blue-800/20 backdrop-blur border border-blue-500/30 p-6 md:p-8 rounded-2xl md:rounded-3xl hover:from-blue-600/30 hover:to-blue-800/30 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2">
-                            <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-transparent rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="cursor-pointer group">
+                          <div className="relative p-6 transition-all duration-500 transform border bg-gradient-to-br from-blue-600/20 to-blue-800/20 backdrop-blur border-blue-500/30 md:p-8 rounded-2xl md:rounded-3xl hover:from-blue-600/30 hover:to-blue-800/30 hover:scale-105 hover:-translate-y-2">
+                            <div className="absolute inset-0 transition-opacity duration-500 opacity-0 bg-gradient-to-br from-blue-600/20 to-transparent rounded-2xl md:rounded-3xl group-hover:opacity-100"></div>
                             <div className="relative z-10">
-                              <div className="text-3xl md:text-4xl lg:text-5xl font-black bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent mb-2 md:mb-3">
+                              <div className="mb-2 text-3xl font-black text-transparent md:text-4xl lg:text-5xl bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text md:mb-3">
                                 {results.total_value.toFixed(2)}
                               </div>
-                              <div className="text-gray-400 text-xs md:text-sm uppercase tracking-wider font-semibold">Total Value</div>
-                              <div className="w-full bg-blue-900/30 rounded-full h-2 mt-3">
-                                <div className="bg-gradient-to-r from-blue-500 to-cyan-400 h-2 rounded-full" style={{width: '85%'}}></div>
+                              <div className="text-xs font-semibold tracking-wider text-gray-400 uppercase md:text-sm">Total Value</div>
+                              <div className="w-full h-2 mt-3 rounded-full bg-blue-900/30">
+                                <div className="h-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400" style={{width: '85%'}}></div>
                               </div>
                             </div>
                           </div>
                         </div>
                         
-                        <div className="group cursor-pointer">
-                          <div className="relative bg-gradient-to-br from-green-600/20 to-emerald-800/20 backdrop-blur border border-green-500/30 p-6 md:p-8 rounded-2xl md:rounded-3xl hover:from-green-600/30 hover:to-emerald-800/30 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2">
-                            <div className="absolute inset-0 bg-gradient-to-br from-green-600/20 to-transparent rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="cursor-pointer group">
+                          <div className="relative p-6 transition-all duration-500 transform border bg-gradient-to-br from-green-600/20 to-emerald-800/20 backdrop-blur border-green-500/30 md:p-8 rounded-2xl md:rounded-3xl hover:from-green-600/30 hover:to-emerald-800/30 hover:scale-105 hover:-translate-y-2">
+                            <div className="absolute inset-0 transition-opacity duration-500 opacity-0 bg-gradient-to-br from-green-600/20 to-transparent rounded-2xl md:rounded-3xl group-hover:opacity-100"></div>
                             <div className="relative z-10">
-                              <div className="text-3xl md:text-4xl lg:text-5xl font-black bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent mb-2 md:mb-3">
+                              <div className="mb-2 text-3xl font-black text-transparent md:text-4xl lg:text-5xl bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text md:mb-3">
                                 {results.total_cost.toFixed(2)}
                               </div>
-                              <div className="text-gray-400 text-xs md:text-sm uppercase tracking-wider font-semibold">Total {mode === 'budget' ? 'Cost (₹)' : 'Time (hrs)'}</div>
-                              <div className="w-full bg-green-900/30 rounded-full h-2 mt-3">
-                                <div className="bg-gradient-to-r from-green-500 to-emerald-400 h-2 rounded-full" style={{width: `${Math.min((results.total_cost / parseFloat(limit || 1)) * 100, 100)}%`}}></div>
+                              <div className="text-xs font-semibold tracking-wider text-gray-400 uppercase md:text-sm">Total {mode === 'budget' ? 'Cost (₹)' : 'Time (hrs)'}</div>
+                              <div className="w-full h-2 mt-3 rounded-full bg-green-900/30">
+                                <div className="h-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-400" style={{width: `${Math.min((results.total_cost / parseFloat(limit || 1)) * 100, 100)}%`}}></div>
                               </div>
                             </div>
                           </div>
@@ -477,8 +458,8 @@ Made by Aryan Lade and Vansh Mahalle
                       </div>
 
                       {/* Chart */}
-                      <div className="relative bg-black/60 border-blue-500/30 backdrop-blur-2xl p-6 md:p-8 shadow-2xl shadow-blue-500/20 rounded-2xl md:rounded-3xl hover:border-blue-500/50 transition-all duration-500">
-                        <h3 className="text-lg md:text-2xl font-bold text-white mb-4 md:mb-6">Value Distribution</h3>
+                      <div className="relative p-6 transition-all duration-500 shadow-2xl bg-black/60 border-blue-500/30 backdrop-blur-2xl md:p-8 shadow-blue-500/20 rounded-2xl md:rounded-3xl hover:border-blue-500/50">
+                        <h3 className="mb-4 text-lg font-bold text-white md:text-2xl md:mb-6">Value Distribution</h3>
                         <div className="h-64 md:h-80">
                           <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={results.selected_destinations}>
@@ -501,15 +482,15 @@ Made by Aryan Lade and Vansh Mahalle
 
                       {/* Selected Destinations */}
                       <div>
-                        <h3 className="font-semibold mb-4 md:mb-6 text-blue-200 flex items-center text-lg md:text-xl">
-                          <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
+                        <h3 className="flex items-center mb-4 text-lg font-semibold text-blue-200 md:mb-6 md:text-xl">
+                          <div className="w-2 h-2 mr-2 bg-green-400 rounded-full"></div>
                           Selected Destinations ({results.selected_destinations.length})
                         </h3>
-                        <div className="space-y-3 md:space-y-4 max-h-64 overflow-y-auto">
+                        <div className="space-y-3 overflow-y-auto md:space-y-4 max-h-64">
                           {results.selected_destinations.map((dest, idx) => (
-                            <div key={idx} className="bg-gradient-to-r from-slate-700/30 to-slate-800/30 backdrop-blur border border-slate-600/50 p-4 md:p-6 rounded-xl md:rounded-2xl hover:from-slate-700/50 hover:to-slate-800/50 hover:border-green-500/30 transition-all duration-300 transform hover:scale-102">
-                              <div className="flex justify-between items-center mb-2">
-                                <span className="font-medium text-green-100 text-base md:text-lg">{dest.name}</span>
+                            <div key={idx} className="p-4 transition-all duration-300 transform border bg-gradient-to-r from-slate-700/30 to-slate-800/30 backdrop-blur border-slate-600/50 md:p-6 rounded-xl md:rounded-2xl hover:from-slate-700/50 hover:to-slate-800/50 hover:border-green-500/30 hover:scale-102">
+                              <div className="flex items-center justify-between mb-2">
+                                <span className="text-base font-medium text-green-100 md:text-lg">{dest.name}</span>
                                 <div className="flex items-center">
                                   <span className={`text-sm md:text-base px-3 md:px-4 py-1 md:py-1.5 rounded-full ${dest.fraction < 1 ? 'bg-yellow-500/20 text-yellow-300' : 'bg-green-500/20 text-green-300'}`}>
                                     {dest.fraction < 1 ? `${(dest.fraction * 100).toFixed(1)}%` : '100%'}
@@ -522,9 +503,9 @@ Made by Aryan Lade and Vansh Mahalle
                                 <span className="bg-green-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg">{dest.time.toFixed(2)}h</span>
                               </div>
                               {dest.fraction < 1 && (
-                                <div className="w-full bg-slate-600/30 rounded-full h-2 mt-3">
+                                <div className="w-full h-2 mt-3 rounded-full bg-slate-600/30">
                                   <div 
-                                    className="bg-gradient-to-r from-yellow-500 to-orange-400 h-2 rounded-full transition-all duration-500" 
+                                    className="h-2 transition-all duration-500 rounded-full bg-gradient-to-r from-yellow-500 to-orange-400" 
                                     style={{width: `${dest.fraction * 100}%`}}
                                   ></div>
                                 </div>
@@ -535,13 +516,13 @@ Made by Aryan Lade and Vansh Mahalle
                       </div>
                     </div>
                   ) : (
-                    <div className="text-center text-slate-400 py-20 md:py-32">
-                      <div className="w-24 md:w-32 h-24 md:h-32 mx-auto mb-6 md:mb-8 opacity-30">
+                    <div className="py-20 text-center text-slate-400 md:py-32">
+                      <div className="w-24 h-24 mx-auto mb-6 md:w-32 md:h-32 md:mb-8 opacity-30">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
                       </div>
-                      <p className="text-lg md:text-2xl mb-2 md:mb-4">Add destinations and optimize to see results</p>
+                      <p className="mb-2 text-lg md:text-2xl md:mb-4">Add destinations and optimize to see results</p>
                       <p className="text-sm md:text-lg">Configure your travel preferences and let the algorithm work its magic</p>
                     </div>
                   )}
@@ -554,16 +535,16 @@ Made by Aryan Lade and Vansh Mahalle
 
       {/* Algorithm Info Modal */}
       {showAlgorithmInfo && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="bg-slate-900/95 backdrop-blur-xl border border-blue-500/30 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-8">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-3xl font-bold text-transparent bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text">
                   Fractional Knapsack Algorithm
                 </h2>
                 <button 
                   onClick={() => setShowAlgorithmInfo(false)}
-                  className="text-gray-400 hover:text-white transition-colors p-2">
+                  className="p-2 text-gray-400 transition-colors hover:text-white">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
@@ -572,7 +553,7 @@ Made by Aryan Lade and Vansh Mahalle
               
               <div className="space-y-6 text-gray-300">
                 <div>
-                  <h3 className="text-xl font-semibold text-blue-300 mb-3">What is Fractional Knapsack?</h3>
+                  <h3 className="mb-3 text-xl font-semibold text-blue-300">What is Fractional Knapsack?</h3>
                   <p className="leading-relaxed">
                     The Fractional Knapsack Algorithm is a greedy optimization technique used to maximize value while staying within constraints. 
                     Unlike the 0/1 knapsack problem, this algorithm allows taking fractions of items, making it perfect for travel optimization.
@@ -580,8 +561,8 @@ Made by Aryan Lade and Vansh Mahalle
                 </div>
                 
                 <div>
-                  <h3 className="text-xl font-semibold text-cyan-300 mb-3">How It Works</h3>
-                  <ol className="list-decimal list-inside space-y-2 leading-relaxed">
+                  <h3 className="mb-3 text-xl font-semibold text-cyan-300">How It Works</h3>
+                  <ol className="space-y-2 leading-relaxed list-decimal list-inside">
                     <li><strong>Calculate Efficiency:</strong> For each destination, compute value-to-cost ratio (satisfaction per dollar/hour)</li>
                     <li><strong>Sort by Efficiency:</strong> Arrange destinations in descending order of their efficiency ratios</li>
                     <li><strong>Greedy Selection:</strong> Select destinations starting from the most efficient</li>
@@ -590,8 +571,8 @@ Made by Aryan Lade and Vansh Mahalle
                 </div>
                 
                 <div>
-                  <h3 className="text-xl font-semibold text-green-300 mb-3">Why It's Perfect for Travel</h3>
-                  <ul className="list-disc list-inside space-y-2 leading-relaxed">
+                  <h3 className="mb-3 text-xl font-semibold text-green-300">Why It's Perfect for Travel</h3>
+                  <ul className="space-y-2 leading-relaxed list-disc list-inside">
                     <li><strong>Flexible Planning:</strong> Allows partial visits (half-day tours, shorter stays)</li>
                     <li><strong>Maximum Satisfaction:</strong> Prioritizes high-value experiences within your limits</li>
                     <li><strong>Optimal Resource Use:</strong> Ensures no budget/time is wasted</li>
@@ -599,9 +580,9 @@ Made by Aryan Lade and Vansh Mahalle
                   </ul>
                 </div>
                 
-                <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-6">
-                  <h3 className="text-xl font-semibold text-blue-300 mb-3">Algorithm Complexity</h3>
-                  <div className="grid md:grid-cols-2 gap-4">
+                <div className="p-6 border bg-blue-500/10 border-blue-500/20 rounded-xl">
+                  <h3 className="mb-3 text-xl font-semibold text-blue-300">Algorithm Complexity</h3>
+                  <div className="grid gap-4 md:grid-cols-2">
                     <div>
                       <p><strong>Time Complexity:</strong> O(n log n)</p>
                       <p className="text-sm text-gray-400">Due to sorting destinations by efficiency</p>
@@ -619,22 +600,22 @@ Made by Aryan Lade and Vansh Mahalle
       )}
 
       {/* Enhanced Footer */}
-      <footer className="relative border-t border-blue-500/20 py-12 md:py-20 bg-black">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-8 md:mb-12 space-y-6 md:space-y-0">
+      <footer className="relative py-12 bg-black border-t border-blue-500/20 md:py-20">
+        <div className="container px-4 mx-auto md:px-6">
+          <div className="flex flex-col items-center justify-between mb-8 space-y-6 md:flex-row md:mb-12 md:space-y-0">
             <div className="flex items-center space-x-4 group">
-              <span className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent">TourOptima</span>
+              <span className="text-2xl font-bold text-transparent md:text-3xl bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text">TourOptima</span>
               <div className="bg-blue-500/20 text-blue-400 border border-blue-500/50 text-xs md:text-sm font-medium px-3 md:px-4 py-1.5 md:py-2 rounded-full">
                 Fractional Knapsack
               </div>
             </div>
-            <div className="text-gray-400 text-center md:text-right">
-              <div className="font-semibold text-blue-300 mb-2 md:mb-3 text-lg md:text-xl">Smart Travel Optimization</div>
+            <div className="text-center text-gray-400 md:text-right">
+              <div className="mb-2 text-lg font-semibold text-blue-300 md:mb-3 md:text-xl">Smart Travel Optimization</div>
             </div>
           </div>
 
-          <div className="text-center text-gray-500 text-lg md:text-xl">
-            Made by <span className="text-blue-400 font-semibold">Aryan Lade</span> and <span className="text-cyan-400 font-semibold">Vansh Mahalle</span>
+          <div className="text-lg text-center text-gray-500 md:text-xl">
+            Made by <span className="font-semibold text-blue-400">Aryan Lade</span> and <span className="font-semibold text-cyan-400">Vansh Mahalle</span>
           </div>
         </div>
       </footer>

@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
+const API_BASE = "https://touropti-backend.onrender.com"
+
 function App() {
   const [destinations, setDestinations] = useState([])
   const [mode, setMode] = useState('budget')
@@ -39,7 +41,7 @@ function App() {
     
     setLoading(true)
     try {
-      const response = await fetch('https://touropti-backend.onrender.com/optimize', {
+      const response = await fetch(`${API_BASE}/optimize`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

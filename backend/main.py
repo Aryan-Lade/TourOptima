@@ -12,6 +12,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+async def root():
+    return {"message": "TourOptima Backend API is running!", "status": "healthy"}
+
 class Destination(BaseModel):
     name: str
     value: float

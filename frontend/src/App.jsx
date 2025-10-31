@@ -38,8 +38,13 @@ function App() {
   }
 
   const optimize = async () => {
-    console.log('Optimize function called')
-    if (!destinations.length || !limit) return
+    console.log('=== OPTIMIZE FUNCTION CALLED ===')
+    console.log('Destinations count:', destinations.length)
+    console.log('Limit value:', limit)
+    if (!destinations.length || !limit) {
+      console.error('Validation failed - missing data')
+      return
+    }
     
     setLoading(true)
     console.log('API_BASE:', API_BASE)
@@ -377,30 +382,7 @@ Made by Aryan Lade and Vansh Mahalle
                     </div>
                     
                     <button
-                      onClick={async () => {
-                        console.log('=== BUTTON CLICKED ON VERCEL ===')
-                        console.log('Destinations:', destinations)
-                        console.log('Limit:', limit)
-                        console.log('Loading:', loading)
-                        console.log('Button should be disabled?', loading || !destinations.length || !limit)
-                        
-                        if (!destinations.length) {
-                          console.error('No destinations added!')
-                          return
-                        }
-                        if (!limit) {
-                          console.error('No limit set!')
-                          return
-                        }
-                        
-                        console.log('Calling optimize function...')
-                        try {
-                          await optimize()
-                          console.log('Optimize function completed')
-                        } catch (error) {
-                          console.error('Error in optimize:', error)
-                        }
-                      }}
+                      onClick={optimize}
                       disabled={loading || !destinations.length || !limit}
                       className="relative group bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 disabled:from-slate-600 disabled:to-slate-700 text-white border-0 px-6 py-4 text-base font-semibold overflow-hidden shadow-2xl shadow-green-500/30 rounded-xl transform transition-all duration-300 hover:scale-105 hover:shadow-green-500/50 active:scale-95 disabled:scale-100 disabled:hover:shadow-none w-full"
                     >

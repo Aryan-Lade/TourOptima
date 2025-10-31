@@ -44,6 +44,7 @@ function App() {
     setLoading(true)
     console.log('API_BASE:', API_BASE)
     console.log('Optimizing with:', { destinations, mode, limit })
+    console.log('Making POST request to:', `${API_BASE}/optimize`)
     try {
       const response = await fetch(`${API_BASE}/optimize`, {
         method: 'POST',

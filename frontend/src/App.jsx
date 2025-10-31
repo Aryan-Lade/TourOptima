@@ -61,10 +61,13 @@ function App() {
         })
       })
       const data = await response.json()
+      console.log('Response status:', response.status, 'OK:', response.ok)
       console.log('Raw response data:', data)
       console.log('Response status was:', response.status)
       setResults(data)
       console.log('Results set successfully:', data)
+      console.log('Results state should now be:', data)
+      console.log('Results is truthy?', !!data)
     } catch (error) {
       console.error('Error:', error)
       console.error('Error message:', error.message)
@@ -454,6 +457,7 @@ Made by Aryan Lade and Vansh Mahalle
                     <h2 className="text-2xl md:text-3xl font-bold text-white group-hover:text-blue-200 transition-colors duration-500">Optimization Results</h2>
                   </div>
                   
+                  {console.log('Rendering results section, results:', results)}
                   {results ? (
                     <div className="space-y-8 md:space-y-10">
                       {/* Summary Cards */}

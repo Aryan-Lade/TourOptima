@@ -25,8 +25,13 @@ function App() {
         cost: parseFloat(newDestination.cost),
         time: parseFloat(newDestination.time)
       }])
-      setNewDestination({ name: '', value: '', cost: '', time: '' })
+      // Don't clear the form - keep inputs visible
     }
+  }
+
+  const deleteDestination = (index) => {
+    const updatedDestinations = destinations.filter((_, i) => i !== index)
+    setDestinations(updatedDestinations)
   }
 
   const optimize = async () => {
@@ -34,7 +39,7 @@ function App() {
     
     setLoading(true)
     try {
-      const response = await fetch('http://127.0.0.1:8000/optimize', {
+      const response = await fetch('https://touropti-backend.onrender.com/optimize', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -396,10 +401,21 @@ Made by Aryan Lade and Vansh Mahalle
                           <div key={idx} className="bg-slate-700/30 backdrop-blur border border-slate-600/50 p-4 md:p-6 rounded-xl md:rounded-2xl hover:bg-slate-700/50 hover:border-blue-500/30 transition-all duration-300 transform hover:scale-102">
                             <div className="flex justify-between items-center">
                               <span className="font-medium text-blue-100 text-base md:text-lg">{dest.name}</span>
-                              <div className="text-sm md:text-base text-slate-300">
-                                <span className="bg-blue-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg mr-2">V: {dest.value}</span>
-                                <span className="bg-cyan-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg mr-2">₹{dest.cost}</span>
-                                <span className="bg-green-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg">{dest.time}h</span>
+                              <div className="flex items-center space-x-2">
+                                <div className="text-sm md:text-base text-slate-300">
+                                  <span className="bg-blue-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg mr-2">V: {dest.value}</span>
+                                  <span className="bg-cyan-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg mr-2">₹{dest.cost}</span>
+                                  <span className="bg-green-500/20 px-2 md:px-3 py-1 md:py-1.5 rounded-lg">{dest.time}h</span>
+                                </div>
+                                <button
+                                  onClick={() => deleteDestination(idx)}
+                                  className="ml-3 bg-red-500/20 hover:bg-red-500/40 text-red-400 hover:text-red-300 border border-red-500/30 hover:border-red-500/50 px-2 py-1 rounded-lg transition-all duration-200"
+                                  title="Delete destination"
+                                >
+                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                  </svg>
+                                </button>
                               </div>
                             </div>
                           </div>

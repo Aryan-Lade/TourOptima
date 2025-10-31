@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
@@ -15,6 +15,10 @@ app.add_middleware(
 @app.get("/")
 async def root():
     return {"message": "TourOptima Backend API is running!", "status": "healthy"}
+
+@app.head("/")
+async def head_root():
+    return Response(status_code=200)
 
 class Destination(BaseModel):
     name: str

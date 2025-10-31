@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
-const API_BASE = "https://touropti-backend.onrender.com"
+const API_BASE = import.meta.env.VITE_API_BASE
 
 function App() {
   const [destinations, setDestinations] = useState([])
@@ -27,7 +27,8 @@ function App() {
         cost: parseFloat(newDestination.cost),
         time: parseFloat(newDestination.time)
       }])
-      // Don't clear the form - keep inputs visible
+      // Clear input fields after adding
+      setNewDestination({ name: '', value: '', cost: '', time: '' })
     }
   }
 

@@ -27,7 +27,8 @@ function App() {
         cost: parseFloat(newDestination.cost),
         time: parseFloat(newDestination.time)
       }])
-      // Don't clear the form - keep inputs visible
+      // Clear input fields after adding
+      setNewDestination({ name: '', value: '', cost: '', time: '' })
     }
   }
 
@@ -37,9 +38,12 @@ function App() {
   }
 
   const optimize = async () => {
+    console.log('Optimize function called')
     if (!destinations.length || !limit) return
     
     setLoading(true)
+    console.log('API_BASE:', API_BASE)
+    console.log('Optimizing with:', { destinations, mode, limit })
     try {
       const response = await fetch(`${API_BASE}/optimize`, {
         method: 'POST',
@@ -51,7 +55,10 @@ function App() {
         })
       })
       const data = await response.json()
+      console.log('Raw response data:', data)
+      console.log('Response status was:', response.status)
       setResults(data)
+      console.log('Results set successfully:', data)
     } catch (error) {
       console.error('Error:', error)
     }
@@ -368,7 +375,18 @@ Made by Aryan Lade and Vansh Mahalle
                     </div>
                     
                     <button
-                      onClick={optimize}
+                      onClick={() => {
+                        console.log('=== BUTTON CLICKED ===')
+                        console.log('Destinations:', destinations)
+                        console.log('Limit:', limit)
+                        console.log('Loading:', loading)
+                        console.log('Button disabled?', loading || !destinations.length || !limit)
+                        if (destinations.length && limit) {
+                          optimize()
+                        } else {
+                          alert('Please add destinations and set a limit first!')
+                        }
+                      }}
                       disabled={loading || !destinations.length || !limit}
                       className="relative group bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 disabled:from-slate-600 disabled:to-slate-700 text-white border-0 px-6 py-4 text-base font-semibold overflow-hidden shadow-2xl shadow-green-500/30 rounded-xl transform transition-all duration-300 hover:scale-105 hover:shadow-green-500/50 active:scale-95 disabled:scale-100 disabled:hover:shadow-none w-full"
                     >

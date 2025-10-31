@@ -385,7 +385,10 @@ Made by Aryan Lade and Vansh Mahalle
                     </div>
                     
                     <button
-                      onClick={optimize}
+                      onClick={() => {
+                        console.log('🔥 BUTTON CLICKED - IMMEDIATE LOG')
+                        optimize()
+                      }}
                       disabled={loading || !destinations.length || !limit}
                       className="relative group bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 disabled:from-slate-600 disabled:to-slate-700 text-white border-0 px-6 py-4 text-base font-semibold overflow-hidden shadow-2xl shadow-green-500/30 rounded-xl transform transition-all duration-300 hover:scale-105 hover:shadow-green-500/50 active:scale-95 disabled:scale-100 disabled:hover:shadow-none w-full"
                     >

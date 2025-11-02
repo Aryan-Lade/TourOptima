@@ -44,9 +44,11 @@ class OptimizeResponse(BaseModel):
 def fractional_knapsack(destinations, limit, mode):
     # Use cost or time based on mode
     if mode == "budget":
-        items = [(d.name, d.value, d.cost, d.value/d.cost, d.time) for d in destinations]
+        items = [(d.name, d.value, d.cost, d.value/d.cost, d.time)
+                 for d in destinations if d.cost > 0]
     else:  # time mode
-        items = [(d.name, d.value, d.time, d.value/d.time, d.cost) for d in destinations]
+        items = [(d.name, d.value, d.time, d.value/d.time, d.cost)
+                 for d in destinations if d.time > 0]
     
     items.sort(key=lambda x: x[3], reverse=True)
     

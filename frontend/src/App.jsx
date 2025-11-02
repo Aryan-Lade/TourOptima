@@ -8,6 +8,7 @@ function App() {
   const [mode, setMode] = useState('budget')
   const [limit, setLimit] = useState('')
   const [results, setResults] = useState(null)
+  const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [showAlgorithmInfo, setShowAlgorithmInfo] = useState(false)
@@ -38,18 +39,12 @@ function App() {
   }
 
   const optimize = async () => {
-    console.log('=== OPTIMIZE FUNCTION CALLED ===')
-    console.log('Destinations count:', destinations.length)
-    console.log('Limit value:', limit)
     if (!destinations.length || !limit) {
-      console.error('Validation failed - missing data')
       return
     }
-    
+
     setLoading(true)
-    console.log('API_BASE:', API_BASE)
-    console.log('Optimizing with:', { destinations, mode, limit })
-    console.log('Making POST request to:', `${API_BASE}/optimize`)
+    setError(null)
     try {
       const response = await fetch(`${API_BASE}/optimize`, {
         method: 'POST',
@@ -60,17 +55,17 @@ function App() {
           limit: parseFloat(limit)
         })
       })
+      if (!response.ok) {
+        throw new Error(`Server responded with status ${response.status}`)
+      }
       const data = await response.json()
-      console.log('Response status:', response.status, 'OK:', response.ok)
-      console.log('Raw response data:', data)
-      console.log('Response status was:', response.status)
+      if (!data || !Array.isArray(data.selected_destinations)) {
+        throw new Error('Received invalid data from server')
+      }
       setResults(data)
-      console.log('Results set successfully:', data)
-      console.log('Results state should now be:', data)
-      console.log('Results is truthy?', !!data)
-    } catch (error) {
-      console.error('Error:', error)
-      console.error('Error message:', error.message)
+    } catch (err) {
+      setResults(null)
+      setError(err.message || 'Something went wrong. Please try again.')
     }
     setLoading(false)
   }
@@ -385,10 +380,7 @@ Made by Aryan Lade and Vansh Mahalle
                     </div>
                     
                     <button
-                      onClick={() => {
-                        console.log('🔥 BUTTON CLICKED - IMMEDIATE LOG')
-                        optimize()
-                      }}
+                      onClick={optimize}
                       disabled={loading || !destinations.length || !limit}
                       className="relative group bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 disabled:from-slate-600 disabled:to-slate-700 text-white border-0 px-6 py-4 text-base font-semibold overflow-hidden shadow-2xl shadow-green-500/30 rounded-xl transform transition-all duration-300 hover:scale-105 hover:shadow-green-500/50 active:scale-95 disabled:scale-100 disabled:hover:shadow-none w-full"
                     >
@@ -460,7 +452,6 @@ Made by Aryan Lade and Vansh Mahalle
                     <h2 className="text-2xl md:text-3xl font-bold text-white group-hover:text-blue-200 transition-colors duration-500">Optimization Results</h2>
                   </div>
                   
-                  {console.log('Rendering results section, results:', results)}
                   {results ? (
                     <div className="space-y-8 md:space-y-10">
                       {/* Summary Cards */}
@@ -556,13 +547,22 @@ Made by Aryan Lade and Vansh Mahalle
                     </div>
                   ) : (
                     <div className="text-center text-slate-400 py-20 md:py-32">
-                      <div className="w-24 md:w-32 h-24 md:h-32 mx-auto mb-6 md:mb-8 opacity-30">
+                      {error ? (
+                        <div className="max-w-md mx-auto bg-red-500/10 border border-red-500/30 rounded-2xl p-6 md:p-8">
+                          <p className="text-red-300 text-lg md:text-xl mb-2">Optimization failed</p>
+                          <p className="text-red-400/80 text-sm md:text-base">{error}</p>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="w-24 md:w-32 h-24 md:h-32 mx-auto mb-6 md:mb-8 opacity-30">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
                       </div>
                       <p className="text-lg md:text-2xl mb-2 md:mb-4">Add destinations and optimize to see results</p>
                       <p className="text-sm md:text-lg">Configure your travel preferences and let the algorithm work its magic</p>
+                        </>
+                      )}
                     </div>
                   )}
                 </div>

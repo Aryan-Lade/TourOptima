@@ -42,6 +42,7 @@ function App() {
     if (!destinations.length || !limit) return
     
     setLoading(true)
+    setError(null)
     try {
       const response = await fetch(`${API_BASE}/optimize`, {
         method: 'POST',
@@ -59,6 +60,8 @@ function App() {
       setResults(data)
     } catch (error) {
       console.error('Error:', error)
+      setResults(null)
+      setError(error.message || 'Something went wrong. Please try again.')
     }
     setLoading(false)
   }

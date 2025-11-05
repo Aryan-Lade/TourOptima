@@ -377,11 +377,6 @@ Made by Aryan Lade and Vansh Mahalle
                     
                     <button
                       onClick={() => {
-                        console.log('=== BUTTON CLICKED ===')
-                        console.log('Destinations:', destinations)
-                        console.log('Limit:', limit)
-                        console.log('Loading:', loading)
-                        console.log('Button disabled?', loading || !destinations.length || !limit)
                         if (destinations.length && limit) {
                           optimize()
                         } else {
@@ -472,7 +467,7 @@ Made by Aryan Lade and Vansh Mahalle
                               </div>
                               <div className="text-xs font-semibold tracking-wider text-gray-400 uppercase md:text-sm">Total Value</div>
                               <div className="w-full h-2 mt-3 rounded-full bg-blue-900/30">
-                                <div className="h-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400" style={{width: '85%'}}></div>
+                                <div className="h-2 transition-all duration-500 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400" style={{width: '100%'}}></div>
                               </div>
                             </div>
                           </div>
@@ -487,7 +482,10 @@ Made by Aryan Lade and Vansh Mahalle
                               </div>
                               <div className="text-xs font-semibold tracking-wider text-gray-400 uppercase md:text-sm">Total {mode === 'budget' ? 'Cost (₹)' : 'Time (hrs)'}</div>
                               <div className="w-full h-2 mt-3 rounded-full bg-green-900/30">
-                                <div className="h-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-400" style={{width: `${Math.min((results.total_cost / parseFloat(limit || 1)) * 100, 100)}%`}}></div>
+                                <div className="h-2 transition-all duration-500 rounded-full bg-gradient-to-r from-green-500 to-emerald-400" style={{width: `${Math.min((results.total_cost / parseFloat(limit || 1)) * 100, 100)}%`}}></div>
+                              </div>
+                              <div className="mt-2 text-xs text-gray-500">
+                                {Math.min((results.total_cost / parseFloat(limit || 1)) * 100, 100).toFixed(0)}% of {mode === 'budget' ? 'budget' : 'time'} used
                               </div>
                             </div>
                           </div>
